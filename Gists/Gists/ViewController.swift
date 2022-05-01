@@ -12,6 +12,8 @@ class ViewController: UITableViewController {
     
     private let placeholderImage = UIImage(named: "placeholder")
     private let cellIdentifier = "gistItem"
+    private var nextPageURLString: String?
+    private var isLoading = false
     private var gists = [Gist]() {
         didSet {
             DispatchQueue.main.async {
@@ -28,7 +30,7 @@ class ViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        loadGists()
+        loadGists(withURLString: nextPageURLString)
     }
 
     // MARK: - Actions
@@ -42,11 +44,22 @@ class ViewController: UITableViewController {
     
     // MARK: - Data Loading
     
-    func loadGists() {
-        GitHubAPIManager.sharedInstance.getPublicGists { result in
+    func loadGists(withURLString urlToLoad: String?) {
+        self.isLoading = true
+        GitHubAPIManager.sharedInstance.fetchPublicGists(pageToLoad: urlToLoad) { result, nextPageURLString  in
+            self.nextPageURLString = nextPageURLString
+            self.isLoading = false
+            
             switch result {
             case .success(let gists):
-                self.gists = gists
+                if urlToLoad != nil {
+                    self.gists += gists
+                } else {
+                    self.gists = gists
+                }
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             case .failure(let error):
                 print(error)
                 // TODO: display error
@@ -79,6 +92,15 @@ extension ViewController {
             }
         } else {
             cell.imageView?.image = placeholderImage
+        }
+        
+        // Check if we need to load more gists
+        let rowsToLoadFromBottom = 5
+        let totalRows = gists.count
+        if let nextPage = nextPageURLString {
+            if !isLoading && (indexPath.row >= (totalRows - rowsToLoadFromBottom)) {
+                loadGists(withURLString: nextPage)
+            }
         }
         
         return cell

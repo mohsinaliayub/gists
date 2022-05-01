@@ -20,23 +20,52 @@ class GitHubAPIManager {
         }
     }
     
-    func getPublicGists(completion: @escaping (Result<[Gist], BackendError>) -> Void) {
-        AF.request(GistRouter.getPublic).responseData { response in
-            let decoder = JSONDecoder()
-            let result: Result<[Gist], BackendError> = decoder.decodeResponse(from: response)
-            completion(result)
+    func fetchPublicGists(pageToLoad: String?, completion: @escaping (Result<[Gist], BackendError>, _ nextPageURLString: String?) -> Void) {
+        if let urlString = pageToLoad {
+            fetchGists(GistRouter.getAtPath(urlString), completion: completion)
+        } else {
+            fetchGists(GistRouter.getPublic, completion: completion)
         }
     }
     
-    func image(fromURL url: URL, completion: @escaping (UIImage?, Error?) -> Void) {
-        AF.request(url).responseData { response in
-            guard let data = response.data else {
-                completion(nil, response.error)
-                return
-            }
-            
-            let image = UIImage(data: data)
-            completion(image, nil)
+    func fetchGists(_ urlRequest: URLRequestConvertible, completion: @escaping (Result<[Gist], BackendError>, _ nextPageURLString: String?) -> Void) {
+        AF.request(urlRequest).responseData { response in
+            let decoder = JSONDecoder()
+            let result: Result<[Gist], BackendError> = decoder.decodeResponse(from: response)
+            // get the link for the next page to load.
+            let nextPageURLString = self.parseNextPageFromHeaders(response: response.response)
+            completion(result, nextPageURLString)
         }
     }
+    
+    private func parseNextPageFromHeaders(response: HTTPURLResponse?) -> String? {
+        guard let linkHeader = response?.allHeaderFields["Link"] as? String else {
+          return nil
+        }
+        /* looks like: <https://...?page=2>; rel="next", <https://...?page=6>; rel="last" */
+        // so split on ","
+        let components = linkHeader.components(separatedBy: ",")
+        // now we have separate lines like '<https://...?page=2>; rel="next"'
+        for item in components {
+          // see if it's "next"
+          let rangeOfNext = item.range(of: "rel=\"next\"", options: [])
+          guard rangeOfNext != nil else {
+            continue
+          }
+          // this is the "next" item, extract the URL
+          let rangeOfPaddedURL = item.range(of: "<(.*)>;",
+                                            options: .regularExpression,
+                                            range: nil,
+                                            locale: nil)
+          guard let range = rangeOfPaddedURL else {
+            return nil
+          }
+          // strip off the < and >;
+          let start = item.index(range.lowerBound, offsetBy: 1)
+          let end = item.index(range.upperBound, offsetBy: -2)
+          let trimmedSubstring = item[start..<end]
+          return String(trimmedSubstring)
+        }
+        return nil
+      }
 }

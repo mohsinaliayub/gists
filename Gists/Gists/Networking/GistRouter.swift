@@ -11,12 +11,13 @@ import Alamofire
 enum GistRouter: URLRequestConvertible {
     static let baseURLString = "https://api.github.com"
     
-    case getPublic
+    case getPublic // GET https://api.github.com/gists/public
+    case getAtPath(String) // GET at given path
     
     func asURLRequest() throws -> URLRequest {
         var method: HTTPMethod {
             switch self {
-            case .getPublic:
+            case .getPublic, .getAtPath(_):
                 return .get
             }
         }
@@ -26,6 +27,9 @@ enum GistRouter: URLRequestConvertible {
             switch self {
             case .getPublic:
                 relativePath = "gists/public"
+            case .getAtPath(let path):
+                // already have the full path, so return it
+                return URL(string: path)!
             }
             
             let url = URL(string: GistRouter.baseURLString)!
