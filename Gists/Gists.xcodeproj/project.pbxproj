@@ -85,9 +85,9 @@
 			children = (
 				4235B76F281ED378002EF8C2 /* Models */,
 				4235B76E281ED36E002EF8C2 /* Networking */,
+				4267DCF5281F039300178D88 /* View Controllers */,
 				4235B753281ECAFA002EF8C2 /* AppDelegate.swift */,
 				4235B755281ECAFA002EF8C2 /* SceneDelegate.swift */,
-				4235B757281ECAFA002EF8C2 /* ViewController.swift */,
 				4235B759281ECAFA002EF8C2 /* Main.storyboard */,
 				4235B75C281ECAFD002EF8C2 /* Assets.xcassets */,
 				4235B75E281ECAFD002EF8C2 /* LaunchScreen.storyboard */,
@@ -115,13 +115,20 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		4267DCF5281F039300178D88 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4235B757281ECAFA002EF8C2 /* ViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
 		A1EB2D29FFE41D46E05F9138 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				F4D43BB4DD901E8F6439178D /* Pods-Gists.debug.xcconfig */,
 				3F9CB52D81154B9420F166CE /* Pods-Gists.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -175,7 +182,7 @@
 			);
 			mainGroup = 4235B747281ECAFA002EF8C2;
 			packageReferences = (
-				4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire.git" */,
+				4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 4235B751281ECAFA002EF8C2 /* Products */;
 			projectDirPath = "";
@@ -475,7 +482,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire.git" */ = {
+		4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -488,7 +495,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		4235B76A281ECBBB002EF8C2 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire.git" */;
+			package = 4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */

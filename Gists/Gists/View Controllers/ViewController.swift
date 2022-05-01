@@ -28,6 +28,16 @@ class ViewController: UITableViewController {
 //        self.navigationItem.leftBarButtonItem = self.editButtonItem
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        // add refresh control for pull-to-refresh
+        if refreshControl == nil {
+            refreshControl = UIRefreshControl()
+            refreshControl?.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
+        }
+        
+        super.viewWillAppear(animated)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadGists(withURLString: nextPageURLString)
@@ -42,6 +52,11 @@ class ViewController: UITableViewController {
         present(alertController, animated: true)
     }
     
+    @objc func refresh(sender: Any) {
+        nextPageURLString = nil // So, it does not try to append the results
+        loadGists(withURLString: nil)
+    }
+    
     // MARK: - Data Loading
     
     func loadGists(withURLString urlToLoad: String?) {
@@ -49,6 +64,11 @@ class ViewController: UITableViewController {
         GitHubAPIManager.sharedInstance.fetchPublicGists(pageToLoad: urlToLoad) { result, nextPageURLString  in
             self.nextPageURLString = nextPageURLString
             self.isLoading = false
+            
+            // tell refresh control to stop showing up
+            if self.refreshControl != nil && self.refreshControl!.isRefreshing {
+                self.refreshControl?.endRefreshing()
+            }
             
             switch result {
             case .success(let gists):
