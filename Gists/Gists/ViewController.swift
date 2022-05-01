@@ -8,9 +8,10 @@
 import UIKit
 
 class ViewController: UITableViewController {
-
+    
+    private var imageCache = [String: UIImage?]()
     private let cellIdentifier = "gistItem"
-    var gists = [Gist]() {
+    private var gists = [Gist]() {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -66,13 +67,35 @@ extension ViewController {
         
         let gist = gists[indexPath.row]
         
-        var configuration = cell.defaultContentConfiguration()
-        configuration.text = gist.description
-        configuration.secondaryText = gist.owner?.login
-        // TODO: set configuration.image to display image at gist.owner.avatarURL
+        cell.textLabel?.text = gist.description
+        cell.detailTextLabel?.text = gist.owner?.login
         
+        if let avatarURL = gist.owner?.avatarURL {
+            if let cachedImage = imageCache[avatarURL.absoluteString] {
+                cell.imageView?.image = cachedImage
+            } else {
+                GitHubAPIManager.sharedInstance.image(fromURL: avatarURL) { image, error in
+                    guard error == nil else {
+                        print(error!)
+                        return
+                    }
+                    
+                    // Save the image so we won't have to keep fetching it when user scrolls
+                    self.imageCache[avatarURL.absoluteString] = image
+                    
+                    if let cellToUpdate = tableView.cellForRow(at: indexPath) {
+                        cellToUpdate.imageView?.image = image
+                        
+                        // need to reload the view, which won't happen otherwise since this is an async call
+                        cellToUpdate.setNeedsLayout()
+                    }
+                }
+            }
+            
+        } else {
+            cell.imageView?.image = nil
+        }
         
-        cell.contentConfiguration = configuration
         return cell
     }
     
