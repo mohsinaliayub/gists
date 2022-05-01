@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import PINRemoteImage
 
 class ViewController: UITableViewController {
     
-    private var imageCache = [String: UIImage?]()
+    private let placeholderImage = UIImage(named: "placeholder")
     private let cellIdentifier = "gistItem"
     private var gists = [Gist]() {
         didSet {
@@ -71,29 +72,13 @@ extension ViewController {
         cell.detailTextLabel?.text = gist.owner?.login
         
         if let avatarURL = gist.owner?.avatarURL {
-            if let cachedImage = imageCache[avatarURL.absoluteString] {
-                cell.imageView?.image = cachedImage
-            } else {
-                GitHubAPIManager.sharedInstance.image(fromURL: avatarURL) { image, error in
-                    guard error == nil else {
-                        print(error!)
-                        return
-                    }
-                    
-                    // Save the image so we won't have to keep fetching it when user scrolls
-                    self.imageCache[avatarURL.absoluteString] = image
-                    
-                    if let cellToUpdate = tableView.cellForRow(at: indexPath) {
-                        cellToUpdate.imageView?.image = image
-                        
-                        // need to reload the view, which won't happen otherwise since this is an async call
-                        cellToUpdate.setNeedsLayout()
-                    }
+            cell.imageView?.pin_setImage(from: avatarURL, placeholderImage: placeholderImage) { _ in
+                if let cellToUpdate = tableView.cellForRow(at: indexPath) {
+                    cellToUpdate.setNeedsLayout()
                 }
             }
-            
         } else {
-            cell.imageView?.image = nil
+            cell.imageView?.image = placeholderImage
         }
         
         return cell

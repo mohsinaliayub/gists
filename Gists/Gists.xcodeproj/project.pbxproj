@@ -19,9 +19,11 @@
 		4235B771281ED386002EF8C2 /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4235B770281ED386002EF8C2 /* Gist.swift */; };
 		4235B773281EDDD4002EF8C2 /* BackendError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4235B772281EDDD4002EF8C2 /* BackendError.swift */; };
 		4235B775281EDE4A002EF8C2 /* JSONEncoder+EncodeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4235B774281EDE4A002EF8C2 /* JSONEncoder+EncodeResponse.swift */; };
+		C670F8A27E2684D2C2200F06 /* Pods_Gists.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 800FF046A9790AD0010E3E07 /* Pods_Gists.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F9CB52D81154B9420F166CE /* Pods-Gists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gists.release.xcconfig"; path = "Target Support Files/Pods-Gists/Pods-Gists.release.xcconfig"; sourceTree = "<group>"; };
 		4235B750281ECAFA002EF8C2 /* Gists.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gists.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4235B753281ECAFA002EF8C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4235B755281ECAFA002EF8C2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -35,6 +37,8 @@
 		4235B770281ED386002EF8C2 /* Gist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
 		4235B772281EDDD4002EF8C2 /* BackendError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendError.swift; sourceTree = "<group>"; };
 		4235B774281EDE4A002EF8C2 /* JSONEncoder+EncodeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+EncodeResponse.swift"; sourceTree = "<group>"; };
+		800FF046A9790AD0010E3E07 /* Pods_Gists.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gists.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4D43BB4DD901E8F6439178D /* Pods-Gists.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gists.debug.xcconfig"; path = "Target Support Files/Pods-Gists/Pods-Gists.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,17 +47,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				4235B76B281ECBBB002EF8C2 /* Alamofire in Frameworks */,
+				C670F8A27E2684D2C2200F06 /* Pods_Gists.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		076D5FBBB115017EC2CE33E0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				800FF046A9790AD0010E3E07 /* Pods_Gists.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4235B747281ECAFA002EF8C2 = {
 			isa = PBXGroup;
 			children = (
 				4235B752281ECAFA002EF8C2 /* Gists */,
 				4235B751281ECAFA002EF8C2 /* Products */,
+				A1EB2D29FFE41D46E05F9138 /* Pods */,
+				076D5FBBB115017EC2CE33E0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -100,6 +115,16 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		A1EB2D29FFE41D46E05F9138 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F4D43BB4DD901E8F6439178D /* Pods-Gists.debug.xcconfig */,
+				3F9CB52D81154B9420F166CE /* Pods-Gists.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -107,9 +132,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4235B764281ECAFD002EF8C2 /* Build configuration list for PBXNativeTarget "Gists" */;
 			buildPhases = (
+				26C454EC5AEF0E6D7125988A /* [CP] Check Pods Manifest.lock */,
 				4235B74C281ECAFA002EF8C2 /* Sources */,
 				4235B74D281ECAFA002EF8C2 /* Frameworks */,
 				4235B74E281ECAFA002EF8C2 /* Resources */,
+				F9A9A70E763595477A62BDF9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -148,7 +175,7 @@
 			);
 			mainGroup = 4235B747281ECAFA002EF8C2;
 			packageReferences = (
-				4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire.git" */,
 			);
 			productRefGroup = 4235B751281ECAFA002EF8C2 /* Products */;
 			projectDirPath = "";
@@ -171,6 +198,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		26C454EC5AEF0E6D7125988A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Gists-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F9A9A70E763595477A62BDF9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Gists/Pods-Gists-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Gists/Pods-Gists-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Gists/Pods-Gists-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4235B74C281ECAFA002EF8C2 /* Sources */ = {
@@ -326,6 +395,7 @@
 		};
 		4235B765281ECAFD002EF8C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4D43BB4DD901E8F6439178D /* Pods-Gists.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -354,6 +424,7 @@
 		};
 		4235B766281ECAFD002EF8C2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3F9CB52D81154B9420F166CE /* Pods-Gists.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -404,7 +475,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -417,7 +488,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		4235B76A281ECBBB002EF8C2 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = 4235B769281ECBBB002EF8C2 /* XCRemoteSwiftPackageReference "Alamofire.git" */;
 			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
