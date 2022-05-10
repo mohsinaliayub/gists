@@ -52,11 +52,29 @@ class ViewController: UITableViewController {
     }
     
     func loadInitialData() {
+        isLoading = true
+        GitHubAPIManager.sharedInstance.oAuthTokenCompletionHandler = { error in
+            guard error == nil else {
+                print(error!)
+                self.isLoading = false
+                // TODO: handle error
+                // something went wrong, try again
+                self.showOAuthLoginView()
+                return
+            }
+            
+            if let _ = self.safariViewController {
+                self.dismiss(animated: false)
+            }
+            self.loadGists(withURLString: nil)
+        }
+        
         if !GitHubAPIManager.sharedInstance.hasOAuthToken() {
             showOAuthLoginView()
-        } else {
-            GitHubAPIManager.sharedInstance.printMyStarredGistsWithOAuth2()
+            return
         }
+        
+        loadGists(withURLString: nil)
     }
 
     // MARK: - Actions
@@ -69,6 +87,7 @@ class ViewController: UITableViewController {
     }
     
     @objc func refresh(sender: Any) {
+        GitHubAPIManager.sharedInstance.isLoadingOAuthToken = false
         nextPageURLString = nil // So, it does not try to append the results
         loadGists(withURLString: nil)
     }
@@ -77,7 +96,7 @@ class ViewController: UITableViewController {
     
     func loadGists(withURLString urlToLoad: String?) {
         self.isLoading = true
-        GitHubAPIManager.sharedInstance.fetchPublicGists(pageToLoad: urlToLoad) { result, nextPageURLString  in
+        GitHubAPIManager.sharedInstance.fetchMyStarredGists(pageToLoad: urlToLoad) { result, nextPageURLString  in
             self.nextPageURLString = nextPageURLString
             self.isLoading = false
             
@@ -162,11 +181,15 @@ extension ViewController: LoginViewControllerDelegate {
         dismiss(animated: true)
         GitHubAPIManager.sharedInstance.isLoadingOAuthToken = true
         
-        if let authURL = GitHubAPIManager.sharedInstance.urlToStartOAuth2Login() {
-            safariViewController = SFSafariViewController(url: authURL)
-            safariViewController?.delegate = self
-            present(safariViewController!, animated: true)
+        guard let authURL = GitHubAPIManager.sharedInstance.urlToStartOAuth2Login() else {
+            let error = BackendError.authCouldNot(reason: "Could not obtain an OAuth token")
+            GitHubAPIManager.sharedInstance.oAuthTokenCompletionHandler?(error)
+            return
         }
+        
+        safariViewController = SFSafariViewController(url: authURL)
+        safariViewController?.delegate = self
+        present(safariViewController!, animated: true)
     }
 }
 
@@ -176,8 +199,10 @@ extension ViewController: SFSafariViewControllerDelegate {
     func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
         // Detect not being able to load the OAuth URL
         if !didLoadSuccessfully {
-            // TODO: handle it better
             controller.dismiss(animated: true)
+            GitHubAPIManager.sharedInstance.isLoadingOAuthToken = false
+            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: [NSLocalizedDescriptionKey: "No Internet connection", NSLocalizedRecoverySuggestionErrorKey: "Please try again."])
+            GitHubAPIManager.sharedInstance.oAuthTokenCompletionHandler?(error)
         }
         
         

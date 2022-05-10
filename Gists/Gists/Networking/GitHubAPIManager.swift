@@ -31,6 +31,10 @@ class GitHubAPIManager {
         get { UserDefaults.standard.bool(forKey: "isLoadingOAuthToken") }
         set { UserDefaults.standard.set(newValue, forKey: "isLoadingOAuthToken") }
     }
+    // handlers for the OAuth process
+    // stored as vars since sometimes it requires a round trip to safari which
+    // makes it hard to just keep a reference to it
+    var oAuthTokenCompletionHandler: ((Error?) -> Void)?
     
     func printPublicGists() {
         AF.request(GistRouter.getPublic).responseString { response in
@@ -55,6 +59,14 @@ class GitHubAPIManager {
             // get the link for the next page to load.
             let nextPageURLString = self.parseNextPageFromHeaders(response: response.response)
             completion(result, nextPageURLString)
+        }
+    }
+    
+    func fetchMyStarredGists(pageToLoad: String?, completion: @escaping (Result<[Gist], BackendError>, _  nextPageURLString: String?) -> Void) {
+        if let urlString = pageToLoad {
+            fetchGists(GistRouter.getAtPath(urlString), completion: completion)
+        } else {
+            fetchGists(GistRouter.getMyStarred, completion: completion)
         }
     }
     
@@ -90,6 +102,8 @@ class GitHubAPIManager {
     func processOAuthStep1Response(url: URL) {
         guard let code = extractCodeFromOAuthStep1Response(url: url) else {
             isLoadingOAuthToken = false
+            let error = BackendError.authCouldNot(reason: "Could not obtain an OAuth token")
+            oAuthTokenCompletionHandler?(error)
             return
         }
         swapCodeForOAuthToken(code: code)
@@ -104,10 +118,10 @@ class GitHubAPIManager {
         
         AF.request(getTokenPath, method: .post, parameters: tokenParams, encoding: URLEncoding.default, headers: headers)
             .responseDecodable(of: OAuthToken.self) { response in
-                // TODO: Handle response to get OAuth token
                 if let error = response.error {
                     print(error)
                     self.isLoadingOAuthToken = false
+                    self.oAuthTokenCompletionHandler?(error)
                     return
                 }
                 
@@ -121,7 +135,10 @@ class GitHubAPIManager {
                 self.isLoadingOAuthToken = false
                 
                 if self.hasOAuthToken() {
-                    self.printMyStarredGistsWithOAuth2()
+                    self.oAuthTokenCompletionHandler?(nil)
+                } else {
+                    let error = BackendError.authCouldNot(reason: "Could not obtain an OAuth token")
+                    self.oAuthTokenCompletionHandler?(error)
                 }
             }
     }
