@@ -1,4 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-Gists/Pods-Gists-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Locksmith/Locksmith.framework
 ${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework
 ${BUILT_PRODUCTS_DIR}/PINOperation/PINOperation.framework
 ${BUILT_PRODUCTS_DIR}/PINRemoteImage/PINRemoteImage.framework

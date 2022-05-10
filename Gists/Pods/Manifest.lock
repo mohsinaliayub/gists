@@ -1,4 +1,5 @@
 PODS:
+  - Locksmith (4.0.0)
   - PINCache (3.0.3):
     - PINCache/Arc-exception-safe (= 3.0.3)
     - PINCache/Core (= 3.0.3)
@@ -16,19 +17,22 @@ PODS:
     - PINRemoteImage/Core
 
 DEPENDENCIES:
+  - Locksmith
   - PINRemoteImage
 
 SPEC REPOS:
   trunk:
+    - Locksmith
     - PINCache
     - PINOperation
     - PINRemoteImage
 
 SPEC CHECKSUMS:
+  Locksmith: e9bebbaaa4cee3c511bc358a44f843c3fe00e21f
   PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
   PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
   PINRemoteImage: f1295b29f8c5e640e25335a1b2bd9d805171bd01
 
-PODFILE CHECKSUM: 8ec6004b21ba69b25e3241034d3535e7aba6d223
+PODFILE CHECKSUM: 3c987ad170b5cb75cb67b1a61914ffb8c3caf0e8
 
 COCOAPODS: 1.11.3

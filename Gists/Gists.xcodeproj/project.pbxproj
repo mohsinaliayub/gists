@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		420DF2662829A15B00E5525D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420DF2652829A15B00E5525D /* LoginViewController.swift */; };
+		420DF26A2829B20D00E5525D /* GistInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 420DF2692829B20D00E5525D /* GistInfoCell.xib */; };
+		420DF26C2829B24B00E5525D /* GistInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420DF26B2829B24B00E5525D /* GistInfoCell.swift */; };
+		420DF26E2829B9A200E5525D /* OAuthToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420DF26D2829B9A200E5525D /* OAuthToken.swift */; };
 		4235B754281ECAFA002EF8C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4235B753281ECAFA002EF8C2 /* AppDelegate.swift */; };
 		4235B756281ECAFA002EF8C2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4235B755281ECAFA002EF8C2 /* SceneDelegate.swift */; };
 		4235B758281ECAFA002EF8C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4235B757281ECAFA002EF8C2 /* ViewController.swift */; };
@@ -24,6 +28,10 @@
 
 /* Begin PBXFileReference section */
 		3F9CB52D81154B9420F166CE /* Pods-Gists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gists.release.xcconfig"; path = "Target Support Files/Pods-Gists/Pods-Gists.release.xcconfig"; sourceTree = "<group>"; };
+		420DF2652829A15B00E5525D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		420DF2692829B20D00E5525D /* GistInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GistInfoCell.xib; sourceTree = "<group>"; };
+		420DF26B2829B24B00E5525D /* GistInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GistInfoCell.swift; sourceTree = "<group>"; };
+		420DF26D2829B9A200E5525D /* OAuthToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthToken.swift; sourceTree = "<group>"; };
 		4235B750281ECAFA002EF8C2 /* Gists.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gists.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4235B753281ECAFA002EF8C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4235B755281ECAFA002EF8C2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +100,7 @@
 				4235B75C281ECAFD002EF8C2 /* Assets.xcassets */,
 				4235B75E281ECAFD002EF8C2 /* LaunchScreen.storyboard */,
 				4235B761281ECAFD002EF8C2 /* Info.plist */,
+				420DF2692829B20D00E5525D /* GistInfoCell.xib */,
 			);
 			path = Gists;
 			sourceTree = "<group>";
@@ -111,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				4235B770281ED386002EF8C2 /* Gist.swift */,
+				420DF26D2829B9A200E5525D /* OAuthToken.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -119,6 +129,8 @@
 			isa = PBXGroup;
 			children = (
 				4235B757281ECAFA002EF8C2 /* ViewController.swift */,
+				420DF2652829A15B00E5525D /* LoginViewController.swift */,
+				420DF26B2829B24B00E5525D /* GistInfoCell.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -199,6 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4235B760281ECAFD002EF8C2 /* LaunchScreen.storyboard in Resources */,
+				420DF26A2829B20D00E5525D /* GistInfoCell.xib in Resources */,
 				4235B75D281ECAFD002EF8C2 /* Assets.xcassets in Resources */,
 				4235B75B281ECAFA002EF8C2 /* Main.storyboard in Resources */,
 			);
@@ -253,11 +266,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				420DF2662829A15B00E5525D /* LoginViewController.swift in Sources */,
 				4235B758281ECAFA002EF8C2 /* ViewController.swift in Sources */,
 				4235B768281ECB37002EF8C2 /* GitHubAPIManager.swift in Sources */,
 				4235B775281EDE4A002EF8C2 /* JSONEncoder+EncodeResponse.swift in Sources */,
+				420DF26C2829B24B00E5525D /* GistInfoCell.swift in Sources */,
 				4235B771281ED386002EF8C2 /* Gist.swift in Sources */,
 				4235B773281EDDD4002EF8C2 /* BackendError.swift in Sources */,
+				420DF26E2829B9A200E5525D /* OAuthToken.swift in Sources */,
 				4235B754281ECAFA002EF8C2 /* AppDelegate.swift in Sources */,
 				4235B76D281ECC71002EF8C2 /* GistRouter.swift in Sources */,
 				4235B756281ECAFA002EF8C2 /* SceneDelegate.swift in Sources */,

@@ -7,6 +7,7 @@
 
 import UIKit
 import PINRemoteImage
+import SafariServices
 
 class ViewController: UITableViewController {
     
@@ -21,11 +22,14 @@ class ViewController: UITableViewController {
             }
         }
     }
+    private var safariViewController: SFSafariViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
 //        self.navigationItem.leftBarButtonItem = self.editButtonItem
+        let gistCellNib = UINib(nibName: "GistInfoCell", bundle: .main)
+        tableView.register(gistCellNib, forCellReuseIdentifier: cellIdentifier)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +45,18 @@ class ViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadGists(withURLString: nextPageURLString)
+        
+        if !GitHubAPIManager.sharedInstance.isLoadingOAuthToken {
+            loadInitialData()
+        }
+    }
+    
+    func loadInitialData() {
+        if !GitHubAPIManager.sharedInstance.hasOAuthToken() {
+            showOAuthLoginView()
+        } else {
+            GitHubAPIManager.sharedInstance.printMyStarredGistsWithOAuth2()
+        }
     }
 
     // MARK: - Actions
@@ -86,6 +102,14 @@ class ViewController: UITableViewController {
             }
         }
     }
+    
+    private func showOAuthLoginView() {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        if let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController {
+            loginVC.delegate = self
+            present(loginVC, animated: true)
+        }
+    }
 }
 
 // MARK: - Table View Data Source & Delegates
@@ -97,22 +121,10 @@ extension ViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! GistInfoCell
         
         let gist = gists[indexPath.row]
-        
-        cell.textLabel?.text = gist.description
-        cell.detailTextLabel?.text = gist.owner?.login
-        
-        if let avatarURL = gist.owner?.avatarURL {
-            cell.imageView?.pin_setImage(from: avatarURL, placeholderImage: placeholderImage) { _ in
-                if let cellToUpdate = tableView.cellForRow(at: indexPath) {
-                    cellToUpdate.setNeedsLayout()
-                }
-            }
-        } else {
-            cell.imageView?.image = placeholderImage
-        }
+        cell.show(with: gist)
         
         // Check if we need to load more gists
         let rowsToLoadFromBottom = 5
@@ -143,3 +155,31 @@ extension ViewController {
     
 }
 
+// MARK: - Login View Controller Delegate
+extension ViewController: LoginViewControllerDelegate {
+    
+    func didTapLoginButton() {
+        dismiss(animated: true)
+        GitHubAPIManager.sharedInstance.isLoadingOAuthToken = true
+        
+        if let authURL = GitHubAPIManager.sharedInstance.urlToStartOAuth2Login() {
+            safariViewController = SFSafariViewController(url: authURL)
+            safariViewController?.delegate = self
+            present(safariViewController!, animated: true)
+        }
+    }
+}
+
+// MARK: - Safari View Controller Delegate
+
+extension ViewController: SFSafariViewControllerDelegate {
+    func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
+        // Detect not being able to load the OAuth URL
+        if !didLoadSuccessfully {
+            // TODO: handle it better
+            controller.dismiss(animated: true)
+        }
+        
+        
+    }
+}

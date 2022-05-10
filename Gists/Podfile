@@ -5,5 +5,6 @@ target 'Gists' do
   use_frameworks!
 
   pod 'PINRemoteImage'
+  pod 'Locksmith' 
 
 end
