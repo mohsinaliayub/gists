@@ -116,9 +116,22 @@ class ViewController: UITableViewController {
                     self.tableView.reloadData()
                 }
             case .failure(let error):
-                print(error)
-                // TODO: display error
+                self.handleLoadGistsError(error)
             }
+        }
+    }
+    
+    func handleLoadGistsError(_ error: Error) {
+        print(error)
+        nextPageURLString = nil
+        isLoading = false
+        
+        switch error {
+        case BackendError.authLost:
+            self.showOAuthLoginView()
+            return
+        default:
+            break
         }
     }
     

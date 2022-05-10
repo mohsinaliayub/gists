@@ -44,6 +44,14 @@ class GitHubAPIManager {
         }
     }
     
+    func checkUnauthorized(urlResponse: HTTPURLResponse) -> BackendError? {
+        if urlResponse.statusCode == 401 {
+            self.oAuthToken = nil
+            return BackendError.authLost(reason: "Not logged in")
+        }
+        return nil
+    }
+    
     func fetchPublicGists(pageToLoad: String?, completion: @escaping (Result<[Gist], BackendError>, _ nextPageURLString: String?) -> Void) {
         if let urlString = pageToLoad {
             fetchGists(GistRouter.getAtPath(urlString), completion: completion)
@@ -53,7 +61,13 @@ class GitHubAPIManager {
     }
     
     func fetchGists(_ urlRequest: URLRequestConvertible, completion: @escaping (Result<[Gist], BackendError>, _ nextPageURLString: String?) -> Void) {
-        AF.request(urlRequest).responseData { response in
+        AF.request(urlRequest).validate().responseData { response in
+            if let urlResponse = response.response,
+               let authError = self.checkUnauthorized(urlResponse: urlResponse) {
+                   completion(.failure(authError), nil)
+                   return
+            }
+            
             let decoder = JSONDecoder()
             let result: Result<[Gist], BackendError> = decoder.decodeResponse(from: response)
             // get the link for the next page to load.
